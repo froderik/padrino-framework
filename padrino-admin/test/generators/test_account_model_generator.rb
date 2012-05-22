@@ -18,7 +18,6 @@ describe "AccountModelGenerator" do
 
       @model = "#{@apptmp}/sample_project/admin/models/account.rb"
     end
-
     should 'be a couchrest model instance' do
       assert_match_in_file(/class Account < CouchRest::Model::Base/m, @model)
     end
@@ -35,4 +34,5 @@ describe "AccountModelGenerator" do
       assert_match_in_file(/errors\.add\(:email, "is not unique"\)/m, @model)
     end
   end
+  
 end

@@ -173,6 +173,26 @@ describe "ModelGenerator" do
     end
   end
 
+  # COUCHPOTATO
+  context "model generator using couchpotato" do
+    should "generate model file with no properties" do
+      capture_io { generate(:project, 'sample_project', "--root=#{@apptmp}", '--script=none', '-t=bacon', '-d=couchpotato') }
+      capture_io { generate(:model, 'user', "-r=#{@apptmp}/sample_project") }
+      assert_match_in_file(/class User/m, "#{@apptmp}/sample_project/models/user.rb")
+      assert_match_in_file(/include CouchPotato::Persistence/m, "#{@apptmp}/sample_project/models/user.rb")
+    end
+
+    should "generate model file with given fields" do
+      capture_io { generate(:project, 'sample_project', "--root=#{@apptmp}", '--script=none', '-t=bacon', '-d=couchpotato') }
+      capture_io { generate(:model, 'person', "name:string", "age", "email:string", "-r=#{@apptmp}/sample_project") }
+      assert_match_in_file(/class Person/m, "#{@apptmp}/sample_project/models/person.rb")
+      assert_match_in_file(/include CouchPotato::Persistence/m, "#{@apptmp}/sample_project/models/person.rb")
+      assert_match_in_file(/property :name, :type => String/m, "#{@apptmp}/sample_project/models/person.rb")
+      assert_match_in_file(/property :age/m, "#{@apptmp}/sample_project/models/person.rb")
+      assert_match_in_file(/property :email, :type => String/m, "#{@apptmp}/sample_project/models/person.rb")
+    end
+  end
+
   # DATAMAPPER
   context "model generator using datamapper" do
 

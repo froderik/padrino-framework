@@ -295,12 +295,19 @@ describe "ProjectGenerator" do
       assert_match_in_file(/project_com/, "#{@apptmp}/project.com/config/database.rb")
     end
 
-
     should "properly generate for couchrest" do
       out, err = capture_io { generate(:project, 'project.com', "--root=#{@apptmp}", '--orm=couchrest', '--script=none') }
       assert_match(/applying.*?couchrest.*?orm/, out)
       assert_match_in_file(/gem 'couchrest_model'/, "#{@apptmp}/project.com/Gemfile")
       assert_match_in_file(/CouchRest.database!/, "#{@apptmp}/project.com/config/database.rb")
+      assert_match_in_file(/project_com/, "#{@apptmp}/project.com/config/database.rb")
+    end
+
+    should "properly generate for couchpotato" do
+      out, err = capture_io { generate(:project, 'project.com', "--root=#{@apptmp}", '--orm=couchpotato', '--script=none') }
+      assert_match(/applying.*?couchpotato.*?orm/, out)
+      assert_match_in_file(/gem 'couch_potato'/, "#{@apptmp}/project.com/Gemfile")
+      assert_match_in_file(/CouchPotato::Config.database_name/, "#{@apptmp}/project.com/config/database.rb")
       assert_match_in_file(/project_com/, "#{@apptmp}/project.com/config/database.rb")
     end
 
